@@ -14,6 +14,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _settings = SettingsService();
   bool _soundEnabled = true;
   double _volume = 0.8;
+  bool _musicEnabled = true;
+  double _musicVolume = 0.5;
   bool _loaded = false;
 
   @override
@@ -25,13 +27,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final enabled = await _settings.loadSoundEnabled();
     final volume = await _settings.loadVolume();
+    final musicEnabled = await _settings.loadMusicEnabled();
+    final musicVolume = await _settings.loadMusicVolume();
     if (!mounted) return;
     setState(() {
       _soundEnabled = enabled;
       _volume = volume;
+      _musicEnabled = musicEnabled;
+      _musicVolume = musicVolume;
       _loaded = true;
       AudioService.instance.enabled = enabled;
       AudioService.instance.volume = volume;
+      AudioService.instance.musicEnabled = musicEnabled;
+      AudioService.instance.musicVolume = musicVolume;
     });
   }
 
@@ -46,6 +54,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _volume = volume);
     AudioService.instance.volume = volume;
     await _settings.saveVolume(volume);
+  }
+
+  Future<void> _toggleMusic(bool enabled) async {
+    setState(() => _musicEnabled = enabled);
+    await AudioService.instance.setMusicEnabled(enabled);
+    await _settings.saveMusicEnabled(enabled);
+  }
+
+  Future<void> _changeMusicVolume(double volume) async {
+    setState(() => _musicVolume = volume);
+    await AudioService.instance.setMusicVolume(volume);
+    await _settings.saveMusicVolume(volume);
   }
 
   @override
@@ -94,6 +114,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 ),
                                 Icon(Icons.volume_up_rounded, color: colors.onSurfaceVariant),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Text('MUSIC', style: Theme.of(context).textTheme.labelLarge),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: colors.surface,
+                          border: Border.all(color: colors.outlineVariant),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SwitchListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: const Text('Background music'),
+                              subtitle: const Text('Menu and battle music loops'),
+                              value: _musicEnabled,
+                              onChanged: _toggleMusic,
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(Icons.music_note_rounded, color: colors.onSurfaceVariant),
+                                Expanded(
+                                  child: Slider(
+                                    value: _musicVolume,
+                                    onChanged: _musicEnabled ? _changeMusicVolume : null,
+                                  ),
+                                ),
+                                Icon(Icons.music_note_rounded, color: colors.onSurfaceVariant),
                               ],
                             ),
                           ],

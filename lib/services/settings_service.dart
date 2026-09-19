@@ -6,6 +6,8 @@ class SettingsService {
   static const _difficultyKey = 'difficulty';
   static const _soundEnabledKey = 'sound_enabled';
   static const _volumeKey = 'sound_volume';
+  static const _musicEnabledKey = 'music_enabled';
+  static const _musicVolumeKey = 'music_volume';
 
   Future<Difficulty> loadDifficulty() async {
     final preferences = await SharedPreferences.getInstance();
@@ -39,5 +41,25 @@ class SettingsService {
   Future<void> saveVolume(double volume) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setDouble(_volumeKey, volume);
+  }
+
+  Future<bool> loadMusicEnabled() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(_musicEnabledKey) ?? true;
+  }
+
+  Future<void> saveMusicEnabled(bool enabled) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setBool(_musicEnabledKey, enabled);
+  }
+
+  Future<double> loadMusicVolume() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getDouble(_musicVolumeKey) ?? 0.5;
+  }
+
+  Future<void> saveMusicVolume(double volume) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setDouble(_musicVolumeKey, volume);
   }
 }

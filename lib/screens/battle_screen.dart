@@ -47,6 +47,7 @@ class _BattleScreenState extends State<BattleScreen> {
     _lastPlayerHp = _controller.state.player.hp;
     _lastGameState = _controller.state.gameState;
     _controller.addListener(_handleControllerChange);
+    AudioService.instance.playMusic('music_battle.mp3');
   }
 
   @override
@@ -56,6 +57,7 @@ class _BattleScreenState extends State<BattleScreen> {
     _enemyTurnTimer?.cancel();
     _enemyAttackTimer?.cancel();
     _focusNode.dispose();
+    AudioService.instance.playMusic('music_menu.mp3');
     super.dispose();
   }
 

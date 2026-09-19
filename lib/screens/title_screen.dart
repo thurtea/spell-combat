@@ -33,6 +33,9 @@ class _TitleScreenState extends State<TitleScreen> {
   Future<void> _loadAudioSettings() async {
     AudioService.instance.enabled = await _settings.loadSoundEnabled();
     AudioService.instance.volume = await _settings.loadVolume();
+    AudioService.instance.musicEnabled = await _settings.loadMusicEnabled();
+    AudioService.instance.musicVolume = await _settings.loadMusicVolume();
+    AudioService.instance.playMusic('music_menu.mp3');
   }
 
   Future<void> _setDifficulty(Difficulty difficulty) async {
