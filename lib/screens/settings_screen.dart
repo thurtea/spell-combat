@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../audio/audio_service.dart';
 import '../services/settings_service.dart';
@@ -165,33 +166,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           border: Border.all(color: colors.outlineVariant),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _HowToPlayLine(
-                              icon: Icons.grid_view_rounded,
+                            const _HowToPlayLine(
+                              icon: Icon(Icons.grid_view_rounded, size: 20),
                               text: 'Tap letter tiles to build a real word from your hand.',
                             ),
-                            SizedBox(height: 12),
+                            const SizedBox(height: 12),
                             _HowToPlayLine(
-                              icon: Icons.flash_on_rounded,
+                              icon: SvgPicture.asset(
+                                'assets/icons/lightning.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: ColorFilter.mode(
+                                  Theme.of(context).colorScheme.primary,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
                               text: 'Submit the word to cast a spell and damage the enemy. '
                                   'Longer words and full-hand "bingos" hit harder.',
                             ),
-                            SizedBox(height: 12),
+                            const SizedBox(height: 12),
                             _HowToPlayLine(
-                              icon: Icons.local_fire_department_rounded,
+                              icon: SvgPicture.asset(
+                                'assets/icons/fire.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: ColorFilter.mode(
+                                  Theme.of(context).colorScheme.primary,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
                               text: 'Chain valid words to build combo multipliers and '
                                   'unlock a devastating Power Word.',
                             ),
-                            SizedBox(height: 12),
-                            _HowToPlayLine(
-                              icon: Icons.shuffle_rounded,
+                            const SizedBox(height: 12),
+                            const _HowToPlayLine(
+                              icon: Icon(Icons.shuffle_rounded, size: 20),
                               text: 'Stuck with a bad hand? Spend a shuffle or reroll charge.',
                             ),
-                            SizedBox(height: 12),
-                            _HowToPlayLine(
-                              icon: Icons.shield_moon_rounded,
+                            const SizedBox(height: 12),
+                            const _HowToPlayLine(
+                              icon: Icon(Icons.shield_moon_rounded, size: 20),
                               text: 'Every enemy archetype fights differently: shields, vowel '
                                   'theft, and berserker rage all change your strategy.',
                             ),
@@ -210,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 class _HowToPlayLine extends StatelessWidget {
   const _HowToPlayLine({required this.icon, required this.text});
 
-  final IconData icon;
+  final Widget icon;
   final String text;
 
   @override
@@ -219,7 +236,10 @@ class _HowToPlayLine extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: colors.primary),
+        IconTheme.merge(
+          data: IconThemeData(color: colors.primary),
+          child: icon,
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(text, style: Theme.of(context).textTheme.bodyMedium),

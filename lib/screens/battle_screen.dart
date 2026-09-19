@@ -41,8 +41,11 @@ class _BattleScreenState extends State<BattleScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = BattleController(difficulty: widget.difficulty);
-    _enemyDefinition = EnemyRoster.forDifficulty(widget.difficulty);
+    _enemyDefinition = EnemyRoster.starting();
+    _controller = BattleController(
+      difficulty: widget.difficulty,
+      enemy: _enemyDefinition.enemy,
+    );
     _lastEnemyHp = _controller.state.enemy.hp;
     _lastPlayerHp = _controller.state.player.hp;
     _lastGameState = _controller.state.gameState;
@@ -173,7 +176,8 @@ class _BattleScreenState extends State<BattleScreen> {
   void _restartBattle() {
     AudioService.instance.buttonClick();
     setState(() {
-      _controller.resetBattle();
+      _enemyDefinition = EnemyRoster.nextAfter(_enemyDefinition);
+      _controller.resetBattle(enemy: _enemyDefinition.enemy);
       _lastEnemyHp = _controller.state.enemy.hp;
       _lastPlayerHp = _controller.state.player.hp;
       _lastGameState = _controller.state.gameState;
@@ -589,7 +593,15 @@ class _ActionRow extends StatelessWidget {
         FilledButton.icon(
           style: FilledButton.styleFrom(padding: compactPadding),
           onPressed: isPlayerTurn && wordReady ? onSubmit : null,
-          icon: const Icon(Icons.flash_on_rounded),
+          icon: SvgPicture.asset(
+            'assets/icons/lightning.svg',
+            width: 18,
+            height: 18,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.onPrimary,
+              BlendMode.srcIn,
+            ),
+          ),
           label: const Text('CAST WORD'),
         ),
         if (showManualPowerWord) ...[

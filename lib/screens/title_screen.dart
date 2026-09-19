@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../audio/audio_service.dart';
 import '../models/difficulty.dart';
@@ -160,7 +161,12 @@ class _BrandPanel extends StatelessWidget {
                   ),
                 ),
               ),
-              Icon(Icons.local_fire_department_rounded, size: iconSize, color: colors.primary),
+              SvgPicture.asset(
+                'assets/icons/fire.svg',
+                width: iconSize,
+                height: iconSize,
+                colorFilter: ColorFilter.mode(colors.primary, BlendMode.srcIn),
+              ),
             ],
           ),
         ),
@@ -182,7 +188,12 @@ class _BrandPanel extends StatelessWidget {
         const SizedBox(height: 34),
         Row(
           children: [
-            Icon(Icons.flash_on_rounded, size: 18, color: colors.tertiary),
+            SvgPicture.asset(
+              'assets/icons/lightning.svg',
+              width: 18,
+              height: 18,
+              colorFilter: ColorFilter.mode(colors.tertiary, BlendMode.srcIn),
+            ),
             const SizedBox(width: 8),
             Flexible(
               child: Text(
@@ -228,7 +239,15 @@ class _ActionPanel extends StatelessWidget {
           const SizedBox(height: 24),
           FilledButton.icon(
             onPressed: onStart,
-            icon: const Icon(Icons.flash_on_rounded),
+            icon: SvgPicture.asset(
+              'assets/icons/lightning.svg',
+              width: 20,
+              height: 20,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onPrimary,
+                BlendMode.srcIn,
+              ),
+            ),
             label: const Text('START GAME'),
           ),
           const SizedBox(height: 10),

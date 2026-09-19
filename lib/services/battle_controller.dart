@@ -28,7 +28,8 @@ class BattleController extends ChangeNotifier {
         _damageCalculator = damageCalculator ?? const DamageCalculator(),
         _hooks = createEnemyArchetypeHooks() {
     final startingPlayer = player ?? const Player(name: 'Spellcaster', hp: 100, maxHp: 100);
-    final startingEnemy = enemy ?? EnemyRoster.forDifficulty(difficulty).enemy;
+    // Default to Goblin Scout unless a caller supplies a specific foe.
+    final startingEnemy = enemy ?? EnemyRoster.starting().enemy;
     _state = BattleState(
       player: startingPlayer,
       enemy: startingEnemy,
@@ -43,14 +44,14 @@ class BattleController extends ChangeNotifier {
   }
 
   static int _shuffleChargesFor(Difficulty difficulty) => switch (difficulty) {
-        Difficulty.easy => 2,
-        Difficulty.normal => 1,
+        Difficulty.easy => 3,
+        Difficulty.normal => 2,
         Difficulty.hard => 1,
       };
 
   static int _rerollChargesFor(Difficulty difficulty) => switch (difficulty) {
-        Difficulty.easy => 3,
-        Difficulty.normal => 2,
+        Difficulty.easy => 4,
+        Difficulty.normal => 3,
         Difficulty.hard => 1,
       };
 
@@ -220,7 +221,7 @@ class BattleController extends ChangeNotifier {
     final nextDifficulty = difficulty ?? _state.difficulty;
     _state = BattleState(
       player: player ?? const Player(name: 'Spellcaster', hp: 100, maxHp: 100),
-      enemy: enemy ?? EnemyRoster.forDifficulty(nextDifficulty).enemy,
+      enemy: enemy ?? EnemyRoster.starting().enemy,
       currentHand: _letterGenerator.generateHand(nextDifficulty),
       currentWord: const Word(),
       comboCount: 0,

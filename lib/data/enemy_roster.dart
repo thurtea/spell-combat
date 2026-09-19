@@ -33,7 +33,7 @@ class EnemyDefinition {
   }
 }
 
-/// Maps each difficulty tier to its signature foe.
+/// Encounter roster. Difficulty tunes player resources; foes rotate per run.
 class EnemyRoster {
   const EnemyRoster._();
 
@@ -53,9 +53,9 @@ class EnemyRoster {
   static const EnemyDefinition flameSalamander = EnemyDefinition(
     enemy: Enemy(
       name: 'Flame Salamander',
-      hp: 130,
-      maxHp: 130,
-      baseAttackPower: 12,
+      hp: 115,
+      maxHp: 115,
+      baseAttackPower: 10,
       archetype: EnemyArchetype.vowelEater,
     ),
     assetPrefix: 'flame-salamander',
@@ -66,9 +66,9 @@ class EnemyRoster {
   static const EnemyDefinition ancientDragon = EnemyDefinition(
     enemy: Enemy(
       name: 'Ancient Dragon',
-      hp: 170,
-      maxHp: 170,
-      baseAttackPower: 14,
+      hp: 160,
+      maxHp: 160,
+      baseAttackPower: 13,
       archetype: EnemyArchetype.berserker,
     ),
     assetPrefix: 'ancient-dragon',
@@ -76,6 +76,27 @@ class EnemyRoster {
     tagline: 'Grows more ferocious as its health drops.',
   );
 
+  /// Fight order: always begin a fresh session on the Goblin Scout.
+  static const List<EnemyDefinition> encounterOrder = [
+    goblinScout,
+    flameSalamander,
+    ancientDragon,
+  ];
+
+  /// First battle of a run always starts with the Goblin Scout.
+  static EnemyDefinition starting() => goblinScout;
+
+  /// Next foe after [current] (cycles). Used on Play Again.
+  static EnemyDefinition nextAfter(EnemyDefinition current) {
+    final index = encounterOrder.indexWhere(
+      (definition) => definition.assetPrefix == current.assetPrefix,
+    );
+    if (index < 0) return goblinScout;
+    return encounterOrder[(index + 1) % encounterOrder.length];
+  }
+
+  /// Legacy mapping kept for callers that still key off difficulty.
+  /// Prefer [starting] / [nextAfter] for new battles.
   static EnemyDefinition forDifficulty(Difficulty difficulty) {
     return switch (difficulty) {
       Difficulty.easy => goblinScout,
