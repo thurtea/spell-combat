@@ -1,11 +1,11 @@
 {
-    "name": "spell_combat",
-    "short_name": "spell_combat",
+    "name": "Spell Combat",
+    "short_name": "Spell Combat",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0b0f1a",
+    "theme_color": "#0b0f1a",
+    "description": "A turn-based word combat game.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

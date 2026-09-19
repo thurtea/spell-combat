@@ -19,9 +19,25 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
     - assets/audio/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  macos:
+    generate: true
+  web:
+    generate: true
+    background_color: "#0b0f1a"
+    theme_color: "#0b0f1a"
+  image_path: "favicon_io-chopper/android-chrome-512x512.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#0b0f1a"
+  adaptive_icon_foreground: "favicon_io-chopper/android-chrome-512x512.png"
+  remove_alpha_ios: true
