@@ -171,8 +171,8 @@ class _BrandPanel extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        RichText(
-          text: TextSpan(
+        Text.rich(
+          TextSpan(
             style: displayStyle,
             children: [
               TextSpan(text: 'SPELL\n', style: TextStyle(color: colors.secondary)),
